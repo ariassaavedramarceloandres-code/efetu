@@ -1,0 +1,187 @@
+/* Hero Carousel Styles */
+.rnz-hero-carousel-wrap {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.rnz-hc-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* min-height default, can be overridden by Elementor inline styles */
+    min-height: 500px;
+    padding: 60px 20px;
+    box-sizing: border-box;
+    transition: background-color 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Forma 100% (absolute al slide) */
+.rnz-hc-shape {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 100%;
+    max-width: 600px;
+    z-index: 0;
+}
+
+.rnz-hc-shape svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Contenedor central (controlado por Elementor max-width) */
+.rnz-hc-inner {
+    width: 100%;
+    max-width: 1380px;
+}
+
+.rnz-hc-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+/* Columna Izquierda (Texto) */
+.rnz-hc-content {
+    flex: 1 1 40%;
+    padding-right: 40px;
+    position: relative;
+    z-index: 2;
+}
+
+.rnz-hc-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    letter-spacing: -0.03em;
+}
+
+.rnz-hc-desc {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--p-color-text, #333);
+    margin-bottom: 32px;
+    line-height: 1.5;
+    max-width: 90%;
+}
+
+.rnz-hc-btn {
+    display: inline-flex;
+    padding: 14px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 50px;
+    text-decoration: none;
+    background-color: #fbbc05;
+    /* Amarillo por defecto */
+    color: #000;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.rnz-hc-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Columna Derecha (Visuales) */
+.rnz-hc-visual {
+    flex: 1 1 50%;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: 100%;
+    min-height: 400px;
+}
+
+.rnz-hc-image {
+    position: relative;
+    z-index: 1;
+    width: 80%;
+    max-width: 450px;
+}
+
+.rnz-hc-image img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* Contenedor de Navegación */
+.rnz-hc-nav-wrapper {
+    position: absolute;
+    top: calc(100% - 20px);
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    pointer-events: none;
+    /* Let clicks pass through empty spaces */
+}
+
+.rnz-hc-nav-wrapper .rnz-hc-inner {
+    pointer-events: none;
+    /* Only buttons should capture events */
+}
+
+/* Paginación abstracta de círculos */
+.rnz-hero-carousel-wrap .rnz-hc-pagination {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    pointer-events: auto;
+}
+
+.rnz-hero-carousel-wrap .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    border: 2px solid #0d6efd;
+    background: transparent;
+    opacity: 1;
+    transition: background 0.3s;
+}
+
+.rnz-hero-carousel-wrap .swiper-pagination-bullet-active {
+    background: #0d6efd;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .rnz-hc-slide {
+        padding: 40px 20px;
+    }
+
+    .rnz-hc-content {
+        flex: 1 1 100%;
+        padding-right: 0;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .rnz-hc-desc {
+        max-width: 100%;
+    }
+
+    .rnz-hc-visual {
+        flex: 1 1 100%;
+        min-height: 300px;
+    }
+
+    .rnz-hc-shape {
+        transform: translate(-50%, -50%);
+        left: 50%;
+    }
+
+    .rnz-hero-carousel-wrap .rnz-hc-pagination {
+        bottom: 15px;
+    }
+}

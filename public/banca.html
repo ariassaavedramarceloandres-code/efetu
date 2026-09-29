@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es" translate="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Efectiva | Login</title>
+  <link rel="icon" href="https://www.efectibank.pe/wp-content/uploads/2026/06/32.webp" sizes="32x32">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/banca/banca.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo-link" href="/">
+      <img src="/banca/img/logo.svg" alt="Efectiva tu financiera" class="logo">
+    </a>
+    <button type="button" class="nav-link" tabindex="-1">Consejos de seguridad</button>
+    <button type="button" class="nav-link" tabindex="-1">FAQs</button>
+    <button type="button" class="nav-link" tabindex="-1">Condiciones de uso</button>
+    <button type="button" class="nav-link help" tabindex="-1">
+      <svg width="23" height="22" viewBox="0 0 23 22" fill="none" aria-hidden="true">
+        <path d="M11.5 19.25C16.0563 19.25 19.75 15.5563 19.75 11C19.75 6.44365 16.0563 2.75 11.5 2.75C6.94365 2.75 3.25 6.44365 3.25 11C3.25 15.5563 6.94365 19.25 11.5 19.25Z" stroke="#061858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M11.5 14.4375C13.3985 14.4375 14.9375 12.8985 14.9375 11C14.9375 9.10152 13.3985 7.5625 11.5 7.5625C9.60152 7.5625 8.0625 9.10152 8.0625 11C8.0625 12.8985 9.60152 14.4375 11.5 14.4375Z" stroke="#061858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M9.06719 8.56816L5.66406 5.16504" stroke="#061858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M13.9297 8.56816L17.3328 5.16504" stroke="#061858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M13.9297 13.4316L17.3328 16.8348" stroke="#061858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M9.06719 13.4316L5.66406 16.8348" stroke="#061858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Ayuda
+    </button>
+  </header>
+
+  <main class="login-page">
+    <img class="login-photo" src="/banca/img/login-bkg.jpg" alt="">
+    <section class="login-box">
+      <div class="top-space"></div>
+      <div class="login-box-items">
+        <div class="icon-title">
+          <div class="icon-cont">
+            <img src="/banca/img/login-lock-key.svg" alt="" width="50" height="50">
+          </div>
+          <h2 id="login-title">Accede a la banca digital</h2>
+        </div>
+
+        <form id="login-form" class="interaction-cont" autocomplete="off" novalidate>
+          <div class="step step-doc" data-step="doc">
+            <div class="user-cont">
+              <div class="field combo" id="doc-type">
+                <p class="float-label">Tipo de documento *</p>
+                <button type="button" class="combo-btn" id="doc-type-btn" aria-haspopup="listbox" aria-expanded="false">
+                  <span id="doc-type-value">DNI</span>
+                  <svg class="chevron" width="10" height="7" viewBox="0 0 10 7" fill="none" aria-hidden="true">
+                    <path d="M1 1L5 5L9 1" stroke="#061858" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                </button>
+                <ul class="combo-options" id="doc-type-list" hidden>
+                  <li data-value="DNI">DNI</li>
+                  <li data-value="CE">Carné Extranjería</li>
+                </ul>
+              </div>
+
+              <div class="field input-field" id="doc-number-wrap">
+                <label class="in-label" for="doc-number">Número de documento *</label>
+                <input id="doc-number" name="documento" inputmode="numeric" maxlength="8" autocomplete="off">
+              </div>
+            </div>
+          </div>
+
+          <div class="step step-pass" data-step="pass" hidden>
+            <div class="field input-field filled">
+              <label class="in-label" for="password">Contraseña</label>
+              <div class="pass-row">
+                <input id="password" name="password" type="password" autocomplete="off">
+                <button type="button" class="eye-btn" id="toggle-pass" aria-label="Mostrar contraseña">
+                  <img src="/banca/img/eye.svg" alt="">
+                </button>
+              </div>
+            </div>
+            <label class="remember">
+              <span class="switch" data-switch="trust">
+                <span class="knob"></span>
+              </span>
+              <span>Confiar en este navegador</span>
+            </label>
+          </div>
+
+          <div class="step step-verify" data-step="verify" hidden>
+            <p class="verify-hint">Ingresa el código que enviamos a tu correo</p>
+            <div class="tokens" id="tokens">
+              <input class="token" maxlength="1" inputmode="numeric" aria-label="Dígito 1">
+              <input class="token" maxlength="1" inputmode="numeric" aria-label="Dígito 2">
+              <input class="token" maxlength="1" inputmode="numeric" aria-label="Dígito 3">
+              <input class="token" maxlength="1" inputmode="numeric" aria-label="Dígito 4">
+              <input class="token" maxlength="1" inputmode="numeric" aria-label="Dígito 5">
+              <input class="token" maxlength="1" inputmode="numeric" aria-label="Dígito 6">
+            </div>
+            <p class="resend">¿Aún no te ha llegado? <span>Volver a enviar</span></p>
+          </div>
+
+          <p class="error-msg" id="error-msg" hidden></p>
+
+          <label class="remember" id="remember-row">
+            <span class="switch" data-switch="remember">
+              <span class="knob"></span>
+            </span>
+            <span>Recuérdame</span>
+          </label>
+
+          <button type="submit" class="continue-btn">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+              <path d="M3.4375 11H18.5625" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12.375 4.8125L18.5625 11L12.375 17.1875" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Continuar
+          </button>
+          <p class="forgot" id="forgot">¿Olvidaste tu contraseña?</p>
+          <p class="demo-note" id="demo-note" hidden>Demostración local: los datos no se envían a ningún servidor.</p>
+        </form>
+      </div>
+
+      <div class="app-icons">
+        <div class="app-row">
+          <p>Descarga la app móvil</p>
+          <div class="store-badges">
+            <img src="/banca/img/googleplay.png" alt="Disponible en Google Play" width="115" height="40">
+            <img src="/banca/img/ios-download.svg" alt="Consíguelo en el App Store" width="120" height="40">
+          </div>
+        </div>
+        <div class="policies">
+          <img src="/banca/img/recaptcha-logo.png" alt="logo recaptcha" class="recaptcha-logo">
+          <p>
+            Este sitio está protegido por reCAPTCHA y se aplica la
+            <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de privacidad</a>
+            y los
+            <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Términos de servicio</a>
+            de Google.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="/banca/banca.js"></script>
+</body>
+</html>

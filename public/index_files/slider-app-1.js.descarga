@@ -1,0 +1,89 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const initSliderApp1 = ($scope) => {
+        const sliderWrap = $scope[0].querySelector('.rnz-sa1-wrap');
+        if (!sliderWrap) return;
+
+        const autoplaySpeed = parseInt(sliderWrap.getAttribute('data-autoplay'));
+        const centeredSlides = sliderWrap.getAttribute('data-centered') === 'true';
+        const loop = sliderWrap.getAttribute('data-loop') === 'true';
+        const configData = sliderWrap.getAttribute('data-config');
+        let config = { desktop: { slides: 3, space: 30 }, tablet: { slides: 2.2, space: 16 }, mobile: { slides: 1.4, space: 12 } };
+        
+        try {
+            if (configData) {
+                config = JSON.parse(configData);
+            }
+        } catch (e) {
+            console.error('Error parsing slider config', e);
+        }
+
+        const pagEl = sliderWrap.querySelector('.rnz-sa1-pagination');
+
+        let swiperOptions = {
+            slidesPerView: config.mobile.slides,
+            spaceBetween: config.mobile.space,
+            effect: 'slide',
+            speed: 600,
+            centeredSlides: centeredSlides,
+            loop: loop,
+            pagination: {
+                el: pagEl,
+                clickable: true,
+            },
+            breakpoints: {
+                768: {
+                    slidesPerView: config.tablet.slides,
+                    spaceBetween: config.tablet.space,
+                },
+                1024: {
+                    slidesPerView: config.desktop.slides,
+                    spaceBetween: config.desktop.space,
+                }
+            },
+            on: {
+                slideChange: function() {
+                    try {
+                        if (this.pagination) {
+                            this.pagination.render();
+                            this.pagination.update();
+                        }
+                    } catch (e) {}
+                }
+            }
+        };
+
+        if (autoplaySpeed > 0) {
+            swiperOptions.autoplay = {
+                delay: autoplaySpeed,
+                disableOnInteraction: false,
+            };
+        }
+
+        // Elementor's Swiper wrapper returns a Promise — must use .then() to get the real instance
+        const SwiperClass = elementorFrontend?.utils?.swiper;
+        if (SwiperClass) {
+            new SwiperClass(sliderWrap, swiperOptions).then(swiperInstance => {
+                if (swiperInstance.pagination) {
+                    swiperInstance.pagination.render();
+                    swiperInstance.pagination.update();
+                }
+            });
+        } else if (typeof window.Swiper !== 'undefined') {
+            new window.Swiper(sliderWrap, swiperOptions);
+        }
+    };
+
+    // Run on Elementor widget init
+    const addHandler = () => {
+        elementorFrontend.hooks.addAction('frontend/element_ready/rnz_slider_app_1.default', initSliderApp1);
+    };
+
+    if (window.elementorFrontend && window.elementorFrontend.hooks && window.elementorFrontend.hooks.addAction) {
+        addHandler();
+    } else {
+        window.addEventListener('elementor/frontend/init', addHandler);
+        document.querySelectorAll('.elementor-widget-rnz_slider_app_1').forEach(widget => {
+            initSliderApp1([widget]);
+        });
+    }
+});

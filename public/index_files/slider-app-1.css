@@ -1,0 +1,99 @@
+/* Slider App 1 Styles */
+.rnz-sa1-container {
+    width: 100%;
+    position: relative;
+    padding: 20px 0 60px;
+    overflow: hidden;
+}
+
+.rnz-sa1-wrap {
+    width: 100%;
+    overflow: visible !important;
+    --active-scale: 1;
+}
+
+.rnz-sa1-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.5s ease, opacity 0.5s ease, filter 0.5s ease;
+    transform: scale(0.85);
+    transform-origin: center center;
+    opacity: 0.6;
+    filter: brightness(0.88);
+}
+
+/* Active slide (first on the left): full size, full opacity */
+.rnz-sa1-slide.swiper-slide-active {
+    transform: scale(1);
+    transform-origin: center left;
+    opacity: 1;
+    z-index: 3;
+    filter: brightness(1);
+}
+
+.rnz-sa1-inner {
+    width: 100%;
+    max-width: 300px;
+}
+
+.rnz-sa1-image {
+    width: 100%;
+    display: block;
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.5s ease;
+}
+
+.rnz-sa1-slide.swiper-slide-active .rnz-sa1-image {
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+}
+
+.rnz-sa1-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: inherit;
+}
+
+/* Pagination Styling */
+.rnz-sa1-wrap .rnz-sa1-pagination {
+    position: relative;
+    margin-top: 30px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.rnz-sa1-wrap .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #999;
+    background: transparent;
+    opacity: 1;
+    transition: background 0.3s, border-color 0.3s, transform 0.3s;
+}
+
+.rnz-sa1-wrap .swiper-pagination-bullet-active {
+    background: #333;
+    border-color: #333;
+    transform: scale(1.15);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .rnz-sa1-inner {
+        max-width: 260px;
+    }
+
+    .rnz-sa1-slide {
+        transform: scale(0.8);
+    }
+
+    .rnz-sa1-slide.swiper-slide-active {
+        transform: scale(1);
+    }
+}

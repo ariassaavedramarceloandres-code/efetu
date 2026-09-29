@@ -1,0 +1,76 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const initHeroCarousel = ($scope) => {
+        const sliderWrap = $scope[0].querySelector('.rnz-hero-carousel-wrap');
+        if (!sliderWrap) return;
+
+        const autoplaySpeed = parseInt(sliderWrap.getAttribute('data-autoplay'));
+        const pauseOnHover = sliderWrap.getAttribute('data-pauseonhover') === 'true';
+        const isInfinite = sliderWrap.getAttribute('data-infinite') === 'true';
+        const parallaxEnabled = sliderWrap.getAttribute('data-parallax') === 'true';
+
+        const pagEl = sliderWrap.querySelector('.rnz-hc-pagination');
+
+        let swiperOptions = {
+            slidesPerView: 1,
+            spaceBetween: 0,
+            effect: 'slide',
+            speed: 800,
+            loop: parallaxEnabled ? false : isInfinite,
+            rewind: parallaxEnabled ? isInfinite : false,
+            parallax: parallaxEnabled,
+            observer: true,
+            observeParents: true,
+            pagination: {
+                el: pagEl,
+                clickable: true,
+                type: 'bullets',
+            },
+            on: {
+                slideChange: function() {
+                    try {
+                        if (this.pagination) {
+                            this.pagination.render();
+                            this.pagination.update();
+                        }
+                    } catch (e) {}
+                }
+            }
+        };
+
+        if (autoplaySpeed > 0) {
+            swiperOptions.autoplay = {
+                delay: autoplaySpeed,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: pauseOnHover,
+            };
+        }
+
+        // Elementor's Swiper wrapper returns a Promise — must use .then() to get the real instance
+        const SwiperClass = elementorFrontend?.utils?.swiper;
+        if (SwiperClass) {
+            new SwiperClass(sliderWrap, swiperOptions).then(swiperInstance => {
+                // Force pagination render after async init
+                if (swiperInstance.pagination) {
+                    swiperInstance.pagination.render();
+                    swiperInstance.pagination.update();
+                }
+            });
+        } else if (typeof window.Swiper !== 'undefined') {
+            new window.Swiper(sliderWrap, swiperOptions);
+        }
+    };
+
+    // Run on Elementor widget init
+    const addHandler = () => {
+        elementorFrontend.hooks.addAction('frontend/element_ready/rnz_hero_carousel.default', initHeroCarousel);
+    };
+
+    if (window.elementorFrontend && window.elementorFrontend.hooks && window.elementorFrontend.hooks.addAction) {
+        addHandler();
+    } else {
+        window.addEventListener('elementor/frontend/init', addHandler);
+        document.querySelectorAll('.elementor-widget-rnz_hero_carousel').forEach(widget => {
+            initHeroCarousel([widget]);
+        });
+    }
+});

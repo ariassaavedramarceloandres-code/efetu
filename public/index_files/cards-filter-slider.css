@@ -1,0 +1,260 @@
+/*======================================================
+  CARDS FILTER SLIDER (NUEVO DISEÑO)
+======================================================*/
+
+.ef-filter-slider-wrap {
+    padding-bottom: 70px;
+    /* Espacio para la paginación */
+}
+
+/* -------------------------------------
+   FILTROS (PÍLDORAS SUPERIORES)
+----------------------------------------*/
+.ef-filter-nav {
+    display: inline-flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 50px;
+    padding: 6px;
+    margin-bottom: 40px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.ef-filter-btn {
+    background: transparent;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.ef-filter-btn:hover {
+    color: #0d6efd;
+}
+
+.ef-filter-btn.active {
+    background-color: #0d6efd;
+    /* Azul de Efectiva */
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
+}
+
+.ef-filter-btn i {
+    display: none;
+    /* Ocultar íconos según el diseño */
+}
+
+@media (max-width: 480px) {
+    .ef-filter-nav {
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        justify-content: flex-start;
+        /* Ocultar scrollbar visualmente pero permitir scroll */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .ef-filter-nav::-webkit-scrollbar {
+        display: none;
+    }
+    .ef-filter-bg {
+        display: none !important;
+    }
+}
+
+
+/* -------------------------------------
+   TARJETAS
+----------------------------------------*/
+.rnz-cfs-card {
+    height: auto;
+}
+
+.rnz-cfs-card-inner {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+.rnz-cfs-card-inner:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+}
+
+.rnz-cfs-card-inner.banner {
+    padding: 0;
+    overflow: hidden
+}
+
+.rnz-cfs-card-inner.banner .rnz-cfs-image {
+    margin: 0 !important;
+    z-index: 2;
+}
+
+.rnz-cfs-card-inner.banner img {
+    aspect-ratio: 1741/2044;
+    object-fit: contain;
+}
+
+.rnz-cfs-title {
+    margin-bottom: 20px;
+}
+
+.rnz-cfs-title h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #111;
+}
+
+.rnz-cfs-image {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    min-height: 150px;
+}
+
+.rnz-cfs-image img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.rnz-cfs-action {
+    margin-top: auto;
+}
+
+.rnz-cfs-link {
+    display: inline-flex;
+    align-items: center;
+    color: #0d6efd;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.rnz-cfs-link:hover {
+    color: #0a58ca;
+}
+
+.rnz-cfs-arrow {
+    margin-left: 5px;
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+
+/* -------------------------------------
+   PAGINACIÓN Y NAVEGACIÓN
+----------------------------------------*/
+.ef-slider-controls {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    z-index: 10;
+}
+
+/* Flechas */
+.ef-slider-prev,
+.ef-slider-next {
+    position: static;
+    margin: 0;
+    width: auto;
+    height: auto;
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.ef-slider-prev::after,
+.ef-slider-next::after {
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.ef-slider-prev:hover,
+.ef-slider-next:hover {
+    opacity: 0.7;
+}
+
+.swiper-button-disabled {
+    opacity: 0.3 !important;
+    cursor: auto;
+}
+
+/* Paginación (Puntos y Píldora) */
+.ef-slider-pagination {
+    position: static;
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.swiper-pagination-bullet {
+    background: transparent;
+    border: 2px solid #fff;
+    opacity: 1;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    margin: 0 !important;
+}
+
+.swiper-pagination-bullet-active {
+    background: #fff;
+    width: 24px;
+    /* Forma de píldora */
+    border-radius: 10px;
+}
+
+
+/* -------------------------------------
+   ESTADOS DE FILTRO
+----------------------------------------*/
+.hide-filter {
+    display: none !important;
+}
+
+/* -------------------------------------
+   ADORNOS Y VARIANTES (BANNER)
+----------------------------------------*/
+.rnz-cfs-svg-shape {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 55%;
+    height: auto;
+    margin: -10px -10px;
+    aspect-ratio: 40/41;
+    color: #196efd;
+    transition: all .25s linear;
+}
+
+.rnz-cfs-card-inner.banner:hover .rnz-cfs-svg-shape {
+    width: 75%;
+}

@@ -1,0 +1,128 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const initQuickLinks = ($scope) => {
+        const wrap = $scope[0].querySelector('.rnz-ql-wrap');
+        if (!wrap) return;
+
+        const items = wrap.querySelectorAll('.rnz-ql-item');
+        if (items.length === 0) return;
+
+        // Configuration for the Intersection Observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -50px 0px', // Trigger slightly before the item hits the very bottom of the screen
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                // If the container is in view
+                if (entry.isIntersecting) {
+                    // Add the 'is-visible' class to trigger the CSS transition
+                    // Since transition-delay is set inline in PHP, they will animate sequentially
+                    items.forEach(item => {
+                        item.classList.add('is-visible');
+                    });
+                    
+                    // The user requested the animation to happen only once.
+                    // Stop observing after the animation has been triggered.
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe the entire grid container
+        observer.observe(wrap);
+
+        // SWIPER LOGIC (Mobile only)
+        const sliderElement = wrap.querySelector('.swiper');
+        let swiperInstance = null;
+        let isMobile = false;
+
+        const initSwiper = () => {
+            const width = window.innerWidth;
+            const mobileCols = parseInt(wrap.getAttribute('data-cols-mobile')) || 1;
+
+            if (width <= 767) {
+                if (!isMobile) {
+                    isMobile = true;
+                    // Initialize Swiper
+                    const pagEl = wrap.querySelector('.swiper-pagination');
+                    const nextEl = wrap.querySelector('.swiper-button-next');
+                    const prevEl = wrap.querySelector('.swiper-button-prev');
+
+                    const swiperConfig = {
+                        slidesPerView: mobileCols,
+                        spaceBetween: 0, 
+                        grabCursor: true,
+                        navigation: {
+                            nextEl: nextEl,
+                            prevEl: prevEl,
+                        },
+                        pagination: {
+                            el: pagEl,
+                            clickable: true,
+                        },
+                        on: {
+                            init: function() {
+                                items.forEach(item => item.classList.add('is-visible'));
+                            },
+                            slideChange: function() {
+                                try {
+                                    if (this.pagination) {
+                                        this.pagination.render();
+                                        this.pagination.update();
+                                    }
+                                } catch (e) {}
+                            }
+                        }
+                    };
+
+                    const SwiperClass = elementorFrontend?.utils?.swiper;
+                    if (SwiperClass) {
+                        new SwiperClass(sliderElement, swiperConfig).then(instance => {
+                            swiperInstance = instance;
+                            if (instance.pagination) {
+                                instance.pagination.render();
+                                instance.pagination.update();
+                            }
+                        });
+                    } else if (typeof window.Swiper !== 'undefined') {
+                        swiperInstance = new window.Swiper(sliderElement, swiperConfig);
+                    }
+                } else if (swiperInstance) {
+                    swiperInstance.update();
+                }
+            } else {
+                if (isMobile) {
+                    isMobile = false;
+                    if (swiperInstance) {
+                        swiperInstance.destroy(true, true);
+                        swiperInstance = null;
+                    }
+                }
+            }
+        };
+
+        initSwiper();
+
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(initSwiper, 250);
+        });
+    };
+
+    // Run on Elementor widget init
+    const addHandler = () => {
+        elementorFrontend.hooks.addAction('frontend/element_ready/rnz_quick_links.default', initQuickLinks);
+    };
+
+    if (window.elementorFrontend && window.elementorFrontend.hooks && window.elementorFrontend.hooks.addAction) {
+        addHandler();
+    } else {
+        window.addEventListener('elementor/frontend/init', addHandler);
+        document.querySelectorAll('.elementor-widget-rnz_quick_links').forEach(widget => {
+            initQuickLinks([widget]);
+        });
+    }
+});

@@ -1,0 +1,152 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const initCardsFilterSlider = ($scope) => {
+        const sliderWrap = $scope[0].querySelector('.ef-filter-slider-wrap');
+        const nav = $scope[0].querySelector('.ef-filter-nav');
+        if (!sliderWrap || !nav) return;
+
+        const slidesDesktop = parseInt(sliderWrap.getAttribute('data-slides-desktop')) || 4;
+        const slidesTablet = parseInt(sliderWrap.getAttribute('data-slides-tablet')) || 2;
+        const slidesMobile = parseInt(sliderWrap.getAttribute('data-slides-mobile')) || 1;
+
+        const allSlides = Array.from(sliderWrap.querySelectorAll('.swiper-slide'));
+        let swiperInstance = null;
+
+        const createSwiper = (container, config) => {
+            const SwiperClass = elementorFrontend?.utils?.swiper;
+            if (SwiperClass) {
+                return new SwiperClass(container, config).then(instance => {
+                    if (instance.pagination) {
+                        instance.pagination.render();
+                        instance.pagination.update();
+                    }
+                    return instance;
+                });
+            } else if (typeof window.Swiper !== 'undefined') {
+                return Promise.resolve(new window.Swiper(container, config));
+            }
+            return Promise.reject('Swiper no está cargado.');
+        };
+
+        const initSwiper = () => {
+            if (swiperInstance) {
+                swiperInstance.destroy(true, true);
+                swiperInstance = null;
+            }
+
+            const pagEl = $scope[0].querySelector('.ef-slider-pagination');
+            const nextEl = $scope[0].querySelector('.ef-slider-next');
+            const prevEl = $scope[0].querySelector('.ef-slider-prev');
+
+            createSwiper(sliderWrap, {
+                slidesPerView: slidesMobile,
+                spaceBetween: 20,
+                pagination: {
+                    el: pagEl,
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: nextEl,
+                    prevEl: prevEl,
+                },
+                grabCursor: true,
+                simulateTouch: true,
+                allowTouchMove: true,
+                preventClicks: true,
+                preventClicksPropagation: true,
+                observer: true,
+                observeParents: true,
+                centerInsufficientSlides: true,
+                breakpoints: {
+                    768: { slidesPerView: slidesTablet, spaceBetween: 20 },
+                    1024: { slidesPerView: slidesDesktop, spaceBetween: 24 }
+                },
+                on: {
+                    slideChange: function() {
+                        try {
+                            if (this.pagination) {
+                                this.pagination.render();
+                                this.pagination.update();
+                            }
+                        } catch (e) {}
+                    }
+                }
+            }).then(instance => {
+                swiperInstance = instance;
+            });
+        };
+
+        const filterSlides = (filterSlug) => {
+            const wrapper = sliderWrap.querySelector('.swiper-wrapper');
+            const slides = wrapper.querySelectorAll('.rnz-cfs-card');
+            
+            slides.forEach(slide => {
+                if (slide.getAttribute('data-filter') === filterSlug) {
+                    slide.style.display = '';
+                    slide.classList.remove('hide-filter');
+                    slide.classList.add('swiper-slide');
+                } else {
+                    slide.style.display = 'none';
+                    slide.classList.add('hide-filter');
+                    slide.classList.remove('swiper-slide');
+                }
+            });
+            
+            if (swiperInstance) {
+                swiperInstance.update();
+                swiperInstance.slideTo(0, 0);
+            } else {
+                initSwiper();
+            }
+        };
+
+        const buttons = nav.querySelectorAll('.ef-filter-btn');
+        const bg = nav.querySelector('.ef-filter-bg');
+        
+        const updatePill = (btn) => {
+            bg.style.width = btn.offsetWidth + 'px';
+            bg.style.height = btn.offsetHeight + 'px';
+            bg.style.left = btn.offsetLeft + 'px';
+            bg.style.top = btn.offsetTop + 'px';
+        };
+
+        let activeBtn = nav.querySelector('.ef-filter-btn.active') || buttons[0];
+        if (activeBtn) {
+            setTimeout(() => updatePill(activeBtn), 100);
+            filterSlides(activeBtn.getAttribute('data-target'));
+        }
+
+        buttons.forEach(btn => {
+            btn.addEventListener('mouseenter', () => updatePill(btn));
+            btn.addEventListener('mouseleave', () => updatePill(activeBtn));
+            
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeBtn = btn;
+                updatePill(btn);
+                filterSlides(btn.getAttribute('data-target'));
+                
+                if (window.innerWidth <= 480) {
+                    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            if (activeBtn) updatePill(activeBtn);
+        });
+    };
+
+    const addHandler = () => {
+        elementorFrontend.hooks.addAction('frontend/element_ready/rnz_cards_filter_slider.default', initCardsFilterSlider);
+    };
+
+    if (window.elementorFrontend && window.elementorFrontend.hooks && window.elementorFrontend.hooks.addAction) {
+        addHandler();
+    } else {
+        window.addEventListener('elementor/frontend/init', addHandler);
+        document.querySelectorAll('.elementor-widget-rnz_cards_filter_slider').forEach(widget => {
+            initCardsFilterSlider([widget]);
+        });
+    }
+});

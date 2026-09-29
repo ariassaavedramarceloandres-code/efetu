@@ -1,0 +1,62 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const Maria = {
+        close: () => {
+            document.body.classList.remove('show-chat-active', 'show-chat-active2');
+        },
+        open: () => {
+            document.body.classList.add('show-chat-active');
+            setTimeout(() => {
+                document.body.classList.add('show-chat-active2');
+            }, 400);
+        },
+        init: () => {
+            if( document.getElementById('showchatclick') == null ) return;
+            
+            document.getElementById('showchatclick').addEventListener('click', () => {
+                Maria.open();
+            })
+            document.getElementById('closeChatsec').addEventListener('click', () => {
+                Maria.close();
+            })
+
+            document.querySelector('#chat-qoute .close-qoute').addEventListener('click', evt => {
+                evt.preventDefault();
+                evt.target.closest('#chat-qoute').classList.add('hidden');
+            })
+
+                /*document.querySelectorAll('[href="#openMaria"]').forEach(elm => {
+                    elm.addEventListener('click', evt => {
+                        evt.preventDefault();
+                        Maria.close();
+                        document.querySelector('chatbot-widget div > div > div:last-child').click();
+                    })
+                })*/
+                document.querySelectorAll('[href="#openMaria"]').forEach(elm => {
+                  elm.addEventListener('click', evt => {
+                    evt.preventDefault();
+                
+                    // opcional: lo que ya tenías
+                    Maria.close();
+                
+                    const btn = document.getElementById('openMaria');
+
+                    if (!btn) return;
+
+                        let tries = 0;
+                        const timer = setInterval(() => {
+                          btn.click();
+                          tries += 1;
+                          if (tries >= 8) clearInterval(timer); // 8 * 250ms = 2s máx
+                        }, 250);
+                    
+                        // primer intento inmediato
+                        btn.click();
+                  });
+                });
+
+
+        }
+    }
+
+    Maria.init();
+})

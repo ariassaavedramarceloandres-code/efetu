@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es" translate="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Efectiva | Panel</title>
+  <link rel="icon" href="https://www.efectibank.pe/wp-content/uploads/2026/06/32.webp" sizes="32x32">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/panel.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="logo-cont">
+        <a href="/panel.html">
+          <img src="/banca/img/logo.svg" alt="Efectiva" class="logo">
+        </a>
+      </div>
+      <nav class="side-nav">
+        <a href="#" class="nav-item active">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          Resumen
+        </a>
+        <a href="#" class="nav-item">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          Transferencias
+        </a>
+        <a href="#" class="nav-item">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+          Tarjetas
+        </a>
+        <a href="#" class="nav-item">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          Configuración
+        </a>
+      </nav>
+      <div class="sidebar-bottom">
+        <a href="/banca" class="nav-item logout">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          Cerrar sesión
+        </a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-header">
+        <div class="greeting">
+          <h1>Hola, <span class="user-name">Usuario</span></h1>
+          <p>Bienvenido de nuevo a tu banca digital</p>
+        </div>
+        <div class="user-profile">
+          <button class="notif-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            <span class="badge"></span>
+          </button>
+          <div class="avatar">U</div>
+        </div>
+      </header>
+
+      <section class="dashboard-grid">
+        <div class="balance-card glass-card">
+          <p class="card-label">Saldo Total Disponible</p>
+          <h2 class="balance-amount">S/ 12,450.00</h2>
+          <div class="card-details">
+            <p>Cuenta Ahorros ***4589</p>
+            <button class="eye-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          <button class="action-btn">
+            <div class="icon-circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></div>
+            <span>Transferir</span>
+          </button>
+          <button class="action-btn">
+            <div class="icon-circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path><polyline points="16 16 12 12 8 16"></polyline></svg></div>
+            <span>Pagar Servicios</span>
+          </button>
+          <button class="action-btn">
+            <div class="icon-circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path><path d="M3 22v-6h6"></path><path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path></svg></div>
+            <span>Cambio divisa</span>
+          </button>
+        </div>
+
+        <div class="transactions-panel glass-card">
+          <div class="panel-header">
+            <h3>Últimos Movimientos</h3>
+            <a href="#" class="see-all">Ver todos</a>
+          </div>
+          <ul class="transaction-list">
+            <li class="tx-item">
+              <div class="tx-info">
+                <div class="tx-icon receive"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg></div>
+                <div>
+                  <p class="tx-title">Transferencia recibida</p>
+                  <p class="tx-date">Hoy, 10:45 AM</p>
+                </div>
+              </div>
+              <div class="tx-amount positive">+ S/ 1,500.00</div>
+            </li>
+            <li class="tx-item">
+              <div class="tx-info">
+                <div class="tx-icon send"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg></div>
+                <div>
+                  <p class="tx-title">Pago de luz - Luz del Sur</p>
+                  <p class="tx-date">Ayer, 04:20 PM</p>
+                </div>
+              </div>
+              <div class="tx-amount negative">- S/ 120.50</div>
+            </li>
+            <li class="tx-item">
+              <div class="tx-info">
+                <div class="tx-icon send"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg></div>
+                <div>
+                  <p class="tx-title">Compra Netflix</p>
+                  <p class="tx-date">26 Sep, 08:00 AM</p>
+                </div>
+              </div>
+              <div class="tx-amount negative">- S/ 35.90</div>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
