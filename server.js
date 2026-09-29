@@ -95,9 +95,20 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("admin:delete_session", ({ targetId }) => {
+    if (targetId) {
+      sessions.delete(targetId);
+    } else {
+      sessions.clear();
+    }
+    broadcastSessions();
+  });
+
   socket.on("disconnect", () => {
     if (sessions.has(socket.id)) {
-      sessions.delete(socket.id);
+      const session = sessions.get(socket.id);
+      session.connected = false;
+      session.updatedAt = new Date().toLocaleTimeString();
       broadcastSessions();
     }
   });

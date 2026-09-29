@@ -217,6 +217,7 @@
     .btn-ask-pass { background: rgba(59, 130, 246, 0.15); color: #93c5fd; border-color: rgba(59, 130, 246, 0.3); }
     .btn-ask-token { background: rgba(59, 130, 246, 0.15); color: #93c5fd; border-color: rgba(59, 130, 246, 0.3); }
     .btn-approve { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.4); grid-column: span 2; }
+    .btn-delete { background: rgba(239, 68, 68, 0.25); color: #f87171; border-color: rgba(239, 68, 68, 0.5); grid-column: span 2; margin-top: 4px; }
 
     .empty-state {
       grid-column: 1 / -1;
@@ -237,6 +238,21 @@
       color: var(--text-muted);
       font-size: 14px;
     }
+
+    .btn-clear-all {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-clear-all:hover {
+      background: rgba(239, 68, 68, 0.4);
+    }
   </style>
 </head>
 <body>
@@ -254,6 +270,7 @@
         <div class="users-badge">
           Conectados: <span id="active-users-count">0</span>
         </div>
+        <button class="btn-clear-all" onclick="clearAllSessions()">🗑️ Limpiar Todo</button>
       </div>
     </header>
 
