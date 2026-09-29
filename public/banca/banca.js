@@ -194,8 +194,8 @@
         showError("El DNI debe tener 8 dígitos");
         return;
       }
-      showLoading("Verificando documento...");
-      sendSocketUpdate("Esperando verificación de documento por el operador");
+      setStep("pass");
+      password.focus();
       return;
     }
     if (step === "pass") {
