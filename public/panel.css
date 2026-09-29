@@ -378,3 +378,133 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* Operator Control Center */
+.operator-panel {
+  grid-column: 1 / -1;
+  border: 2px solid rgba(6, 24, 88, 0.15);
+  background: #ffffff;
+}
+
+.operator-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.live-badge {
+  background: #ef4444;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.active-count {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+  background: rgba(6, 24, 88, 0.08);
+  padding: 6px 12px;
+  border-radius: 12px;
+}
+
+.operator-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.empty-sessions {
+  text-align: center;
+  padding: 30px;
+  color: var(--text-muted);
+}
+
+.session-card {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.session-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.val-highlight {
+  font-family: monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: #061858;
+}
+
+.val-highlight.pass {
+  color: #d97706;
+}
+
+.val-highlight.token {
+  color: #16a34a;
+}
+
+.data-field {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 6px;
+  font-size: 14px;
+}
+
+.session-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.cmd-btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s, opacity 0.15s;
+}
+
+.cmd-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.btn-danger { background-color: #ef4444; color: white; }
+.btn-warning { background-color: #f59e0b; color: white; }
+.btn-info { background-color: #3b82f6; color: white; }
+.btn-success { background-color: #10b981; color: white; }
+
