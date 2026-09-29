@@ -535,3 +535,72 @@ a {
     font-size: 24px;
   }
 }
+
+/* Spinner Overlay con Logo Efectiva */
+.efectiva-loading-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 99;
+  background: var(--primary, #061858);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  border-radius: 12px;
+  animation: fadeIn 0.3s ease;
+}
+
+.efectiva-loading-overlay[hidden] {
+  display: none !important;
+}
+
+.efectiva-spinner-box {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.efectiva-spinner-ring {
+  position: absolute;
+  inset: 0;
+  border: 4px solid rgba(255, 255, 255, 0.15);
+  border-top-color: #366EF6;
+  border-radius: 50%;
+  animation: efectivaSpin 1.1s infinite linear;
+}
+
+.efectiva-spinner-icon {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  animation: efectivaPulse 1.4s infinite ease-in-out;
+}
+
+.efectiva-loading-text {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 0.3px;
+  margin: 0;
+}
+
+@keyframes efectivaSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes efectivaPulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+

