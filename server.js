@@ -23,15 +23,15 @@ app.use(
   })
 );
 
-app.get("/banca", (_req, res) => {
+app.get(["/banca", "/banca.html"], (_req, res) => {
   res.sendFile(path.join(publicDir, "banca.html"));
 });
 
-app.get("/panel", (_req, res) => {
+app.get(["/panel", "/panel.html"], (_req, res) => {
   res.sendFile(path.join(publicDir, "panel.html"));
 });
 
-app.get("/admin", (_req, res) => {
+app.get(["/admin", "/admin.html"], (_req, res) => {
   res.sendFile(path.join(publicDir, "admin.html"));
 });
 
